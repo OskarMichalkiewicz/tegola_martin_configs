@@ -1,0 +1,66 @@
+# Database connection string
+connection_string: "postgres://postgres@localhost/geoserver"
+
+# Maximum connections pool size [default: 20]
+pool_size: 20
+
+# Connection keep alive timeout [default: 75]
+keep_alive: 75
+
+# Number of web server workers
+worker_processes: 8
+
+# The socket address to bind [default: 0.0.0.0:3000]
+listen_addresses: "0.0.0.0:3005"
+
+# Enable watch mode
+watch: true
+
+# Trust invalid certificates. This introduces significant vulnerabilities, and should only be used as a last resort.
+danger_accept_invalid_certs: false
+
+# associative arrays of table sources
+table_sources:
+  public.states:
+    # table source id
+    id: public.states
+
+    # table schema
+    schema: public
+
+    # table name
+    table: states
+
+    # geometry column name
+    geometry_column: geom
+
+    # geometry srid
+    srid: 4326
+
+    # tile extent in tile coordinate space
+    extent: 4096
+
+    # buffer distance in tile coordinate space to optionally clip geometries
+    buffer: 64
+
+    # boolean to control if geometries should be clipped or encoded as is
+    clip_geom: true
+
+    # geometry type
+    geometry_type: MULTIPOLYGON
+
+    # list of columns, that should be encoded as a tile properties
+    properties:
+      gid: int4
+      
+  public.powiat_nowotarski:
+    id: public.powiat_nowotarski
+    schema: public
+    table: powiat_nowotarski
+    geometry_column: geom
+    srid: 3857
+    extent: 4096
+    clip_geom: true
+    geometry_type: POLYGON
+    properties:
+      gid: int4
