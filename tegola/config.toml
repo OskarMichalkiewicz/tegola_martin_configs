@@ -1,0 +1,38 @@
+[webserver]
+port = ":8080"
+
+# register data providers
+[[providers]]
+name = "geoserver"           # provider name is referenced from map layers
+type = "postgis"        # the type of data provider. currently only supports postgis
+host = "localhost"      # postgis database host
+port = 5432             # postgis database port
+database = "geoserver"       # postgis database name
+user = "postgres"         # postgis database user
+password = "postgres"           # postgis database password
+
+  [[providers.layers]]
+  name = "powiat_nowotarski"
+  geometry_fieldname = "geom"
+  srid = 3857
+  id_fieldname = "id"
+  sql = "SELECT ST_AsBinary(ST_Transform(geom, 3857)) AS geom, nazwa, id FROM powiat_nowotarski WHERE geom && !BBOX!"
+  
+  [[providers.layers]]
+  srid = 4326
+  name = "states"
+  geometry_fieldname = "geom"
+  id_fieldname = "id"
+  sql = "SELECT ST_AsBinary(geom) AS geom, state_name, id FROM states WHERE geom && !BBOX!"
+
+[[maps]]
+name = "powiat_nowotarski"
+
+  [[maps.layers]]
+  provider_layer = "geoserver.powiat_nowotarski"
+  
+[[maps]]
+name = "states"
+  
+  [[maps.layers]]
+  provider_layer = "geoserver.states"
